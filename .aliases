@@ -1,0 +1,43 @@
+#!/bin/bash
+alias aliases="source ~/.aliases"
+alias profile="source ~/.profile"
+
+alias cd..="cd .."
+alias cd...="cd ../.."
+alias cd....="cd ../../.."
+alias cd~="cd ~"
+alias cd-="cd -"
+alias cdt="cd ~/turn"
+alias cdm="cd ~/turn/src/java/com/turn/platform/profile/mapreduce/adhocAnalyses/mta"
+alias cdp="cd ~/poc"
+alias cdn="cd ~/Dropbox"
+alias cdw="cd ~/Dropbox/work"
+alias cde="cd ~/Dropbox/etc"
+alias cdh="cd /server/hadoop"
+
+alias ls="ls -aF"
+alias l="ls | cat"
+
+alias rmr="rm -r"
+alias rmt="rm *.class"
+
+alias c7="chmod 700"
+
+# # #
+
+alias jvmi="java -jar ~/bin/REPL.jar"
+
+alias ip="ipython"
+
+alias test="ant clean test"
+
+alias grep="grep -E --color=auto -i"
+alias r="grep"
+
+alias g="git"
+alias gl="git status"
+alias dif="git dif"
+alias ga="git amend"
+alias gorc="git status --porcelain | cut -d ' ' -f 2 | tr '\n' ' '"
+
+alias e="emacs -q"

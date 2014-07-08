@@ -1,0 +1,54 @@
+[user]
+	email = samboosalis@gmail.com
+	name = Sam Boosalis
+
+[core]
+	filemode = false
+	autocrlf = false
+
+[ui]
+	color = true
+
+[color]
+	ui = true
+
+[alias]
+	ch = rev-parse --verify HEAD
+	dif = diff --unified=1 --color-words --no-index
+	rmrm = "rm "
+        g = log --graph --oneline --decorate
+
+	s = status
+        p = status --porcelain
+
+        b = branch
+
+        co = checkout
+        cb = checkout -b
+	com = checkout master
+
+	d = diff
+        dm = diff master
+        df = diff --name-only
+        dmf = diff master --name-only
+	dc = "!git --no-pager diff --cached"
+
+	a = add
+        au = add -u
+        ap = add -p
+
+	c = commit
+	cm = commit -m
+	ca = "!git commit --amend && echo && git status"
+        amend = "!git add -u && git commit --amend --no-edit && echo && git status"
+
+	unedit = checkout --
+	unstage = reset HEAD --
+        uncommit = checkout master --
+
+        r = rebase
+        rc = rebase --continue
+        ra = rebase --abort
+
+[push]
+	default = current
