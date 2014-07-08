@@ -1,0 +1,11 @@
+cmake
+datomic
+erlang
+ghc
+graphviz
+haskell-platform
+leiningen
+pkg-config
+play
+stanford-parser
+wget
