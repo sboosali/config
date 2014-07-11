@@ -2,11 +2,18 @@
 alias aliases="source ~/.aliases"
 alias profile="source ~/.profile"
 
+
+#
+
+alias cd~="cd ~"
+alias cd-="cd -"
 alias cd..="cd .."
 alias cd...="cd ../.."
 alias cd....="cd ../../.."
-alias cd~="cd ~"
-alias cd-="cd -"
+alias cd.....="cd ../../../.."
+alias cd......="cd ../../../../.."
+alias cd.......="cd ../../../../../.."
+
 alias cdt="cd ~/turn"
 alias cdm="cd ~/turn/src/java/com/turn/platform/profile/mapreduce/adhocAnalyses/mta"
 alias cdp="cd ~/poc"
@@ -14,25 +21,51 @@ alias cdn="cd ~/Dropbox"
 alias cdw="cd ~/Dropbox/work"
 alias cde="cd ~/Dropbox/etc"
 alias cdh="cd /server/hadoop"
+alias cdc="cd ~/config"
 
-alias ls="ls -aF"
+alias ls="ls -aFG"
 alias l="ls | cat"
 
+alias rm="rm -f" # -P for security
 alias rmr="rm -r"
-alias rmt="rm *.class"
+alias rmt="rm *~ .*~ \#*\# .\#* matlab_crash_dump.* java.log.* *.pyc *.class __pycache__/*.pyc *.agdai *.hi *.hout *.o"
 
 alias c7="chmod 700"
 
-# # #
+alias ps="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
+
+alias c=cat
+
+
+# programming languages
 
 alias jvmi="java -jar ~/bin/REPL.jar"
 
 alias ip="ipython"
+alias p="python3"
+alias p3="python3"
+alias p2="python2.7"
+
+alias e="emacs -q"
+
+alias clojure="java -cp ~/bin/clojure-1.6.0.jar clojure.main"
+
+alias s="scala"
+
+alias a="agda"
+alias ai="agda -I"
+
+alias pl="prolog -q -t 'main.' -s"
+
+alias coqtop="coqtop -I . -emacs -impredicative-set"
+alias twelf="/Applications/Twelf/bin/twelf-server"
+
+
+#
 
 alias test="ant clean test"
 
-alias grep="grep -E --color=auto -i"
-alias r="grep"
+alias r="grep -E --color=auto -i"
 
 alias g="git"
 alias gl="git status"
@@ -40,4 +73,6 @@ alias dif="git dif"
 alias ga="git amend"
 alias gorc="git status --porcelain | cut -d ' ' -f 2 | tr '\n' ' '"
 
-alias e="emacs -q"
+alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+alias e="/usr/bin/emacs -nw"
+

@@ -2,9 +2,15 @@
 	email = samboosalis@gmail.com
 	name = Sam Boosalis
 
+[credential]
+	helper = osxkeychain
+
 [core]
 	filemode = false
 	autocrlf = false
+
+	editor = emacs
+	pager = 
 
 [ui]
 	color = true
@@ -17,6 +23,8 @@
 	dif = diff --unified=1 --color-words --no-index
 	rmrm = "rm "
         g = log --graph --oneline --decorate
+	lsd = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        up = !sh -c 'git remote add origin $1 && git fetch origin && git branch --set-upstream master origin/master' -
 
 	s = status
         p = status --porcelain
