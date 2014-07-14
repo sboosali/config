@@ -53,6 +53,9 @@
 	ca = "!git commit --amend && echo && git status"
         amend = "!git add -u && git commit --amend --no-edit && echo && git status"
 
+        m = merge
+        ma = merge --abort
+
 	unedit = checkout --
 	unstage = reset HEAD --
         uncommit = checkout master --
