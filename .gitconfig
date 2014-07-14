@@ -2,6 +2,9 @@
 	email = samboosalis@gmail.com
 	name = Sam Boosalis
 
+# [remote "origin"]
+# 	url = ssh://git@...
+
 [credential]
 	helper = osxkeychain
 
