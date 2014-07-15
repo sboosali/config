@@ -39,3 +39,8 @@ function blame {
  git show $(git blame "$FILE" -L $LINE,$LINE | awk '{print $1}')
 }
 
+# absolute path
+function path {
+ echo $(cd $(dirname $1); pwd)/$(basename $1)
+}
+

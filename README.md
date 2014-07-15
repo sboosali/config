@@ -16,3 +16,10 @@ Local v Global
 ===
 
 you can have a local config override the global config via `local/*`
+
+
+Package Managers
+===
+brew list
+cabal list --installed
+pip freeze
