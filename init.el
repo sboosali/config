@@ -1,105 +1,51 @@
 ;;;;;;;;;;;;;;; INIT ;;;;;;;;;;;;;;;;;;;;;;
-(setq HOME "/Users/sambo/")
-(add-to-list 'load-path "~/.emacs.d/packages/")
+(require 'cl)
 
+(setq HOME "/Users/sambo/.emacs.d/")
 
-;;;;;;;;;;;;;;; SHORTUCTS ;;;;;;;;;;;;;;;;;;;;;;
+(defvar load-paths '(
+ "structured-haskell-mode/elisp"
+ "ghc-server/elisp"
+ "hindent/elisp"
+) "load paths that don't obey the normal package-name/module-name.el format.")
 
-(defun copy-all () "Copy entire buffer to clipboard" (interactive)
-    (clipboard-kill-ring-save (point-min) (point-max)))
-(global-set-key "\C-\M-a" 'copy-all)
+(add-to-list 'load-path HOME)
+(add-to-list 'load-path (concat HOME "packages/"))
+(add-to-list 'load-path (concat HOME "structured-haskell-mode/elisp/"))
 
-(defun indent-and-next () (interactive)
-  (move-beginning-of-line 1)
-  (insert " ")
-  (next-line)
-  (move-beginning-of-line 1))
-(global-set-key "\M-j" 'indent-and-next)
-
-(defun kill-line-save () (interactive)
-  (kill-line)
-  (yank))
-(global-set-key "\M-k" 'kill-line-save)
-
-(defun force-kill-buffer () (interactive)
-  (kill-buffer (buffer-name)))
-(global-set-key "\C-x k" 'force-kill-buffer)
-
-(defun delete-line ()
-  "Deletes a line, but preserves the kill-ring."
-  (interactive)
-  (if (not (equal (point) (point-max))) ; end of buffer
-      (kill-line)
-    (setq kill-ring (cdr kill-ring))))
-
-(defun new-note () (interactive)
-  (end-of-buffer)
-  (backward-paragraph)
-  (forward-paragraph)
-  (delete-line) (delete-line) (delete-line) (delete-line)
-  (newline) (newline))
-(global-set-key "\M-n" 'new-note)
-
-(global-set-key "\M-c" 'kill-ring-save)
-(global-set-key "\M-v" 'yank)
-
-(global-set-key "\M-w" 'capitalize-word)
-
-(global-set-key "\M-q" 'save-buffers-kill-terminal)
-(global-set-key "\M-`" "\C-xb")
-(global-set-key "\M-g" 'goto-line)
-(global-set-key [(meta up)] 'beginning-of-buffer)
-(global-set-key [(meta down)] 'end-of-buffer)
-(global-set-key "\C-x\C-o" 'other-window)
-(global-set-key "\C-xk" 'kill-this-buffer)
-(global-set-key "\C-x\C-k" 'kill-this-buffer)
-(global-set-key "\C-x\C-b" 'electric-buffer-list)
-(global-set-key "\M-m" 'switch-to-buffer)
-(global-set-key (kbd "<escape>") 'save-buffer)
-(global-set-key "\M-s" 'save-buffer)
-(global-set-key "\C-\\" 'find-file)
-
-(global-set-key "\M--" "\C-a-  -  -  -  -  -  -  -\C-o\C-a\C-n")
-(global-set-key (kbd "M-0") nil)
-(global-set-key "\M-i" 'ucs-insert)
-
-(global-set-key [C-return] 'dabbrev-expand)
-(global-set-key [tab] 'dabbrev-expand)
-
-(global-set-key "\C-\M-y" 'yank-pop)
-
-;(global-set-key (kbd "M-<escape>") 'kmacro-start-macro-or-insert-counter)
-;(global-set-key (kbd "<escape>") 'kmacro-end-call-mouse)
-;(global-set-key "\C-<right>" 'other-window) ;TODO 'windmove-* maybe?
-;(global-set-key "\C-<right>" 'BACKWARDS-other-window)
-
-(global-set-key "\M-r" 'query-replace-regexp)
-(global-set-key "\C-s" 'isearch-forward-regexp)
-(global-set-key "\C-r" 'isearch-backward-regexp)
-
-(global-set-key "\M-z" 'undo)
-
-;; (defun shell-insert () (interactive)
-;;  (prefix-arg 1)
-;;  (shell-command))
-;; (global-set-key "\C-!" 'shell-insert)
+(loop for location in load-paths
+      do (add-to-list 'load-path (concat HOME location)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;; Packaging ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Add marmalade repos
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar packages '(starter-kit smex undo-tree magit solarized-theme smart-tabs-mode)) ; scala-mode
+(defvar packages
+ '(starter-kit smex undo-tree magit solarized-theme smart-tabs-mode))
+
 (dolist (p packages)
   (unless (package-installed-p p)
     (package-install p)))
+
+
+;; (require 'shm)
+;; (require 'hindent)
+;; (require 'ghc)
+;; (require 'shm-case-split)
+
+;; (smex-initialize)
+;; (turn-on-haskell-simple-indent)
+;; (load "haskell-mode-autoloads.el")
+
+
 
 
 ;;;;;;;;;;;;;;; UTIL ;;;;;;;;;;;;;;;;;;;;;;
@@ -112,33 +58,22 @@
     (print (car list))
     (setq list (cdr list))))
 
+(defun key (key act)
+  (global-set-key key act))
+
 
 ;;;;;;;;;;;;;;; SETTINGS ;;;;;;;;;;;;;;;;;;;;;;
 
 (setq inhibit-splash-screen t)
 
 ; hide menu bar
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;;peek
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 
-;;abbreviations
-;; tell emacs where to read abbrev definitions from...
-(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
-;; save abbrevs when files are saved
-;; you will be asked before the abbreviations are saved
-(setq save-abbrevs t)
-(if (file-exists-p abbrev-file-name)
-    (quietly-read-abbrev-file))
-
-;; if you want it always on:
-;(setq default-abbrev-mode t)
-;;If you only want it on in text and derived modes, you could do something like this:
-(dolist (hook '(text-mode-hook python-mode-hook))
-  (add-hook hook (lambda () (abbrev-mode 1))))
 
 (set-face-attribute 'default nil :height 140)
 
@@ -173,27 +108,69 @@
 ;; or make Emacs ask about missing newline
 (setq require-final-newline nil)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; SavePlace ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'saveplace)
+
+(setq-default save-place t)
+;can't use setq because the variable is buffer-local.
+
+(setq save-place-file "~/.emacs.d/saved-places")
+;your saved places are written to this file
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; Abbreviations ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; tell emacs where to read abbrev definitions from...
+(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
+
+;; save abbrevs when files are saved
+;; you will be asked before the abbreviations are saved
+(setq save-abbrevs t)
+(if (file-exists-p abbrev-file-name)
+    (quietly-read-abbrev-file))
+
+;; keep it always on
+;(setq default-abbrev-mode t)
+
+;; turn it on sometimes
+;(dolist (hook '(text-mode-hook python-mode-hook))
+;  (add-hook hook (lambda () (abbrev-mode 1))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; Deft ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'deft)
+
+(setq deft-extension "txt")
+(setq deft-directory "~/Dropbox/deft")
+
+(setq deft-text-mode 'markdown-mode)
+
+(global-set-key [f8] 'deft)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Smex ;;;;;;;;;;;;;;;;;;;;;;;;
+; "Smex is a M-x enhancement for Emacs. Built on top of IDO, it provides a convenient interface to your recently and most frequently used commands."
 
+;
 (global-set-key [(meta x)] (lambda ()
-                             (interactive)
-                             (or (boundp 'smex-cache)
-                                 (smex-initialize))
-                             (global-set-key [(meta x)] 'smex)
-                             (smex)))
+ (interactive)
+ (or (boundp 'smex-cache)
+     (smex-initialize))
+ (global-set-key [(meta x)] 'smex)
+ (smex)))
 
+;
 (global-set-key [(shift meta x)] (lambda ()
-                                   (interactive)
-                                   (or (boundp 'smex-cache)
-                                       (smex-initialize))
-                                   (global-set-key [(shift meta x)] 'smex-major-mode-commands)
-                                   (smex-major-mode-commands)))
+ (interactive)
+ (or (boundp 'smex-cache)
+    (smex-initialize))
+ (global-set-key [(shift meta x)] 'smex-major-mode-commands)
+ (smex-major-mode-commands)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; PYTHON ;;;;;;;;;;;;;;;;;;;;;;;;
-
 (require 'smart-tabs-mode)
+
 (defun my-python-mode-hook ()
   (smart-tabs-advice python-indent-line-1 python-indent)
 
@@ -205,129 +182,74 @@
   (setq py-smart-indentation nil)
 
   (setq-default show-trailing-whitespace t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
   (setq py-indent-comments nil)
   (setq py-electric-comment-p nil)
 )
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
-(defun python-init () (interactive)
-  (insert "#!/usr/bin/python")
-  (newline)
-  (insert "from __future__ import division")
-  (newline)
-  )
 
-(defun python-init-math () (interactive)
-    (python-init)
-    (insert "from numpy import *")
-    (newline)
-    (insert "from matplotlib.pyplot import *")
-    (newline)
-    (insert "import nltk")
-    (newline)
-    (insert "import numpy.random as sample")
-    (newline)
-    (insert "import scipy.stats as pdfs")
-    (newline)
-    (newline)
-    (newline)
-)
+;;;;;;;;;;;;;;;;;;;;;;;; Templates ;;;;;;;;;;;;;;;;;;;;;;;;
+;http://emacs-template.sourceforge.net/
+(require 'template)
+(template-initialize)
 
-(defun python-init-script () (interactive)
-  (python-init)
-  (insert "from glob import *")
-  (newline)
-  (insert "import argparse")
-  (newline)
-  (newline)
-  (insert "cmdln = argparse.ArgumentParser()")
-  (newline)
-  (insert "cmdln.add_argument('file')")
-  (newline)
-  (insert "args = cmdln.parse_args()")
-  (newline)
-  (newline)
-  )
+;$ mkdir ~/.templates/
+;$ touch ~/.templates/TEMPLATE.hs.tpl
+;$ ls ~/.templates/*.tpl
 
-(defun python-debug ()
-  "Insert breakpoint above cursor point." (interactive)
-  (previous-line)
-  (move-end-of-line nil)
-  (newline-and-indent)
-  (insert "import pdb; pdb.set_trace()")
-  (save-buffer)
-  )
+;M-x template-new-file
+;M-x template-expand-template
 
-(defun python-main ()
-  "Insert breakpoint above cursor point." (interactive)
-  (move-beginning-of-line nil)
-  (insert "if __name__=='__main__':")
-  (newline)
-  (indent)
-  (save-buffer)
-  )
+;some standard embedded tags (note the parentheses):
+;; (>>>POINT<<<)
+;; (>>>FILE_SANS<<<)
+;; (>>>DATE<<<)
+;; (>>>USER_NAME<<<)
 
-;;;;;;;;;;;;;;;;;;;;;; COQ ;;;;;;;;;;;;;;;;;;;;;;
+; defines the tag (>>>GUIID<<<)
+;(add-to-list 'template-expansion-alist
+; '("GUIID" (insert (substring (shell-command-to-string "uuidgen") 0 -1))))
 
-;(global-unset-key (kbd "C-RET"))
-;(global-set-key (kbd "C-RET") 'proof-add-completions)
+;(add-to-list 'template-find-file-commands 'ido-exit-minibuffer)
 
-;commenting
-;; (global-set-key "\C-]" "\C-a(* \C-e *)\C-n")
-
-;; (defun coq-mode ()
-;;   (when (and (stringp buffer-file-name)
-;;              (string-match "\\.v$'" buffer-file-name))
-;;     (global-set-key (kbd "M-RET") 'proof-goto-point)))
-;; (add-hook 'find-file-hook 'note-mode)
-
-;; (global-set-key (kbd "M-RET") 'proof-goto-point)
-
-;; (let ((default-directory (concat HOME "bin/ProofGeneral/")))
-;;   (normal-top-level-add-subdirs-to-load-path))
-;; (setq auto-mode-alist (cons '("\\.v$" . coq-mode) auto-mode-alist))
-;; (autoload 'coq-mode "coq" "Major mode for editing Coq vernacular." t)
-;; (load-file (concat HOME "bin/ProofGeneral/generic/proof-site.el"))
-
-;(load-file "~/course/195x/pg-setup.el")
-
-
-;;;;;;;;;;;;;;;;;;;;;;;; TEX ;;;;;;;;;;;;;;;;;;;;;;;;
-(set-input-method "TeX")
 
 ;;;;;;;;;;;;;;;;;;;;;;;; NOTES ;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;inline latex. inserts unicode.
 (defun note-mode ()
-  (when (or (string-match "\\.note$" buffer-file-name)
-            (string-match "\\.md$" buffer-file-name))
-    (set-input-method "TeX")))
+  (when (string-match "\\.note$" buffer-file-name)
+   (set-input-method "TeX")
+   ;(comment-dwim ".")
+))
 (add-hook 'find-file-hook 'note-mode)
 
+
 ;;;;;;;;;;;;;;; ??? ;;;;;;;;;;;;;;;;;;;;;;
-(defun set-exec-path-from-shell-PATH ()
+; I forget why
+(defun set-exec-path-from-shell-path ()
   (let ((path-from-shell
-      (replace-regexp-in-string "[[:space:]\n]*$" ""
-        (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
+         (replace-regexp-in-string
+          "[[:space:]\n]*$"
+          ""
+          (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
-(when (equal system-type 'darwin) (set-exec-path-from-shell-PATH))
-(set-exec-path-from-shell-PATH)
+(when (equal system-type 'darwin) (set-exec-path-from-shell-path))
+(set-exec-path-from-shell-path)
+
 
 ;; ;;;;;;;;;;;;;;; Haskell ;;;;;;;;;;;;;;;;;;;;;;
-;; (load "~/.emacs.d/packages/haskell-mode/haskell-site-file")
-;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+(add-to-list 'auto-mode-alist '("\\.elm$" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.curry$" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.idr$" . haskell-mode))
 
 
 ;; ;;;;;;;;;;;;;;; Prolog ;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'auto-mode-alist '("\\.pl" . 'prolog-mode))
+(add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
 
-
-;; ;;;;;;;;;;;;;;; Octave ;;;;;;;;;;;;;;;;;;;;;;
-;; (autoload 'octave-mode "octave-mod" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
 ;; ;;;;;;;;;;;;;;; Scala ;;;;;;;;;;;;;;;;;;;;;;
 ;(add-to-list 'load-path (concat HOME ".emacs.d/scala-mode2/"))
@@ -338,11 +260,6 @@
 (setq tramp-default-method "ssh")
 
 
-;;;;;;;;;;;;;;; e.g. ;;;;;;;;;;;;;;;;;;;;;;
-
-;(string-match "/path/to/file" (buffer-file-name))
-
-
 ;;;;;;;;;;;;;;; Abbreviations ;;;;;;;;;;;;;;;;;;;;;;
 
 (defun after-abbrev-expand-hook ()
@@ -351,9 +268,10 @@
   t)
 (put 'after-abbrev-expand-hook 'no-self-insert t)
 
-;;;;;;;;;;;;;;; Terminal ;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;; Terminal ;;;;;;;;;;;;;;;;;;;;;;
 (require 'multi-term)
+
 (setq multi-term-program "/bin/bash")
 
 ;; default (print-list term-bind-key-alist)
@@ -382,9 +300,7 @@
 ;; "C-y"
 ;; "<ESC>"
 
-(setq
- term-bind-key-alist
- '(
+(setq term-bind-key-alist '(
    ("C-c" . term-interrupt-subjob)
 
    ("<up>" . term-send-up)
@@ -398,11 +314,9 @@
    ("M-DEL" . term-send-backward-kill-word)
 
    ("M-v" . term-paste)
-   ))
+))
 
-(setq
- term-unbind-key-list
- '(
+(setq term-unbind-key-list '(
    "C-z"
    "C-x"
    "C-h"
@@ -412,72 +326,181 @@
    ; copy and paste
    "M-v"
    "M-c"
-   ))
+))
 
 ;unicode
 ;(set-terminal-coding-system 'utf-8-unix)
 ;(setq default-process-coding-system '((utf-8-unix . utf-8-unix)))
 
+;;;;;;;;;;;;;;; transpar ;;;;;;;;;;;;;;;;;;;;;;
+;transpose paragraphs
+(require 'transpar)
+
+
 ;;;;;;;;;;;;;;; Windows ;;;;;;;;;;;;;;;;;;;;;;
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+(global-set-key (kbd "C-<left>") 'windmove-left)
+(global-set-key (kbd "C-<left>") 'windmove-left)
+(global-set-key (kbd "C-S-<left>") 'windmove-left)
+(global-set-key (kbd "C-S-<right>") 'windmove-right)
+
+
 ;;;;;;;;;;;;;;; Frames ;;;;;;;;;;;;;;;;;;;;;;
+; full-screen the frame
+; frames are called windows in other applications
 (custom-set-variables
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
+
 ;;;;;;;;;;;;;;; Applications ;;;;;;;;;;;;;;;;;;;;;;
 
-;; (defun terminal-app ()
-;;   (split-window-horizontally)
-;;   (multi-term)
-;;   (other-window 1)
-;;   (multi-term)
-;; ;  (insert "ipy3")
-;; ;  (newline)
-;;   (other-window 1)
-;; )
-;; (if (string-match "Terminal\\.app" (getenv "EMACSPATH"))
-;;     (terminal-app))
-
-;; (defun obs-app ()
-;;   (find-file "~/Dropbox/.obs")
-;;   (next-line)
-;; )
-;; (if (string-match "Obs\\.app" (getenv "EMACSPATH"))
-;;     (obs-app))
-
-;; (defun diary-app ()
-;;   (find-file "~/diary/sleep")
-;; )
-;; (if (string-match "Diary\\.app" (getenv "EMACSPATH"))
-;;     (diary-app))
+(defun server-app ()
+ (server-start)
+; undo with:
+;  (server-force-delete)
+)
+(if (string-match "Emacs\\.app" (getenv "EMACSPATH"))
+    (server-app))
 
 (defun notes-app ()
-  (find-file "~/Dropbox/turn.note")
+  (find-file "~/Dropbox/.note")
   (end-of-buffer)
 )
-(if (string-match "Notes\\.app" (car command-line-args))
+(if (string-match "Notes\\.app" (getenv "EMACSPATH"))
     (notes-app))
 
-(defun work-app ()
-  (find-file "~/Dropbox/work/CODE")
+(defun obs-app ()
+;  (find-file "~/Dropbox/.obs")
+  (find-file "~/Dropbox/scratch")
+  (next-line)
 )
-(if (string-match "Work\\.app" (car command-line-args))
+(if (string-match "Obs\\.app" (getenv "EMACSPATH"))
+    (obs-app))
+
+(defun diary-app ()
+  (find-file "~/diary/sleep")
+)
+(if (string-match "Diary\\.app" (getenv "EMACSPATH"))
+    (diary-app))
+
+(defun work-app ()
+  (find-file "~/Haskell")
+  (find-file "~/TODO")
+  (end-of-buffer)
+  ;; (split-window-horizontally)
+  ;; (find-file "/Users/sambo/Library/Application Support/LightTable/plugins/Claire/README.md")
+  ;; (find-file "/Users/sambo/poc/README")
+  ;; (other-window 1)
+  ;; (find-file "~/poc_everything/example-lighttable-plugin/README.md")
+)
+(if (string-match "Work\\.app" (getenv "EMACSPATH"))
     (work-app))
 
-(defun do-app ()
-  (find-file "~/Dropbox/todo/TODO")
-  (find-file "~/Dropbox/todo/NOW")
-  (end-of-buffer)
+(defun terminal-app ()
+  (split-window-horizontally)
+  (multi-term)
+  (other-window 1)
+  (multi-term)
+  (other-window 1)
 )
-(if (string-match "Do\\.app" (car command-line-args))
-    (do-app))
+(if (string-match "Terminal\\.app" (getenv "EMACSPATH"))
+    (terminal-app))
+
 
 ;;;;;;;;;;;;;;; AUTOSAVE ;;;;;;;;;;;;;;;;;;;;;;
 ;(setq auto-save-timeout 1)
 ;(setq auto-save-interval 20)
 
-(run-with-idle-timer 5 t 'save-buffer)
+(run-with-idle-timer 3 t 'save-buffer)
 
-(setq require-final-newline nil)
+
+;;;;;;;;;;;;;;; Shortucts ;;;;;;;;;;;;;;;;;;;;;;
+
+(defun indent-and-next () (interactive)
+  (move-beginning-of-line 1)
+  (insert " ")
+  (next-line)
+  (move-beginning-of-line 1))
+(global-set-key "\M-j" 'indent-and-next)
+
+(defun kill-line-save () (interactive)
+  (kill-line)
+  (yank))
+(global-set-key "\M-k" 'kill-line-save)
+
+(defun force-kill-buffer () (interactive)
+  (kill-buffer (buffer-name)))
+(global-set-key "\C-x k" 'force-kill-buffer)
+
+(defun delete-line ()
+  "Deletes a line, but preserves the kill-ring."
+  (interactive)
+  (if (not (equal (point) (point-max))) ; end of buffer
+      (kill-line)
+    (setq kill-ring (cdr kill-ring))))
+
+(defun new-note () (interactive)
+  (end-of-buffer)
+  (backward-paragraph)
+  (forward-paragraph)
+  (delete-line) (delete-line) (delete-line) (delete-line)
+  (newline) (newline))
+(global-set-key "\M-n" 'new-note)
+
+(defun transpose-paragraph () (interactive)
+ (backward-paragraph)
+ (kill-paragraph)
+ (backward-paragraph)
+ (yank))
+(global-set-key "\M-T" 'transpose-paragraph)
+
+(global-set-key "\M-c" 'kill-ring-save)
+(global-set-key "\M-v" 'yank)
+
+(global-set-key "\M-x" 'kill-region)
+(global-set-key "\C-w" 'execute-extended-command)
+
+(global-set-key "\M-w" 'capitalize-word)
+
+(global-set-key "\M-g" 'goto-line)
+
+(global-set-key [(meta up)] 'beginning-of-buffer)
+(global-set-key [(meta down)] 'end-of-buffer)
+
+(global-set-key "\C-x\C-o" 'other-window)
+
+(global-set-key "\M-q" 'save-buffers-kill-terminal)
+(global-set-key "\C-xk" 'kill-this-buffer)
+(global-set-key "\C-x\C-k" 'kill-this-buffer)
+(global-set-key "\C-x\C-b" 'electric-buffer-list)
+(global-set-key "\M-m" 'switch-to-buffer)
+(global-set-key "\M-`" "\C-xb")
+(global-set-key "\M-s" 'save-buffer)
+
+(global-set-key "\C-\\" 'find-file)
+
+(global-set-key "\M--" "\C-a-  -  -  -  -  -  -  -\C-o\C-a\C-n")
+(global-set-key (kbd "M-0") nil)
+
+(global-set-key "\M-i" 'ucs-insert)
+
+(global-set-key [C-return] 'dabbrev-expand)
+(global-set-key (kbd "<tab>") 'dabbrev-expand)
+
+;(global-set-key (kbd "M-<escape>") 'kmacro-start-macro-or-insert-counter)
+;(global-set-key (kbd "<escape>") 'kmacro-end-call-mouse)
+;(global-set-key "\C-<right>" 'other-window) ;TODO 'windmove-* maybe?
+;(global-set-key "\C-<right>" 'BACKWARDS-other-window)
+
+(global-set-key "\M-r" 'query-replace-regexp)
+(global-set-key "\C-s" 'isearch-forward-regexp)
+(global-set-key "\C-r" 'isearch-backward-regexp)
+
+(global-set-key "\M-z" 'undo)
+
+
+;;;;;;;;;;;;;;; Macros ;;;;;;;;;;;;;;;;;;;;;;
+; from
+

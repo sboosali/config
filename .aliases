@@ -38,6 +38,8 @@ alias ps="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
 
 # programming languages
 
+alias h="runhaskell"
+
 alias jvmi="java -jar ~/bin/REPL.jar"
 
 alias ip="ipython"
