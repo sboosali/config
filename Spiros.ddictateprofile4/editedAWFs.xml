@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Version</key>
+	<string>3.0/1</string>
+	<key>Words</key>
+	<dict>
+		<key>Haskell</key>
+		<dict>
+			<key>Flags</key>
+			<string></string>
+			<key>Sense</key>
+			<string></string>
+			<key>Source</key>
+			<string>Engine</string>
+			<key>Spoken</key>
+			<string></string>
+			<key>Written</key>
+			<string>Haskell</string>
+		</dict>
+		<key>\cap\cap next</key>
+		<dict>
+			<key>Flags</key>
+			<string></string>
+			<key>Sense</key>
+			<string>cap</string>
+			<key>Source</key>
+			<string>Engine</string>
+			<key>Spoken</key>
+			<string>cap next</string>
+			<key>Written</key>
+			<string></string>
+			<key>rewrites</key>
+			<array>
+				<dict>
+					<key>RewriteForm</key>
+					<string></string>
+					<key>bIsRewriteFormActive</key>
+					<false/>
+					<key>bParamValue</key>
+					<false/>
+					<key>clientData</key>
+					<integer>0</integer>
+					<key>hParam</key>
+					<integer>18446744073709551615</integer>
+					<key>pControl</key>
+					<array>
+						<dict>
+							<key>hName</key>
+							<string>DSXItnRuleControlName_Cap</string>
+							<key>hParam</key>
+							<string>DSXItnRuleControlParam_After</string>
+						</dict>
+					</array>
+					<key>pLeftContextTags</key>
+					<array/>
+					<key>pRightContextTags</key>
+					<array/>
+				</dict>
+			</array>
+		</dict>
+		<key>\new-line\new line</key>
+		<dict>
+			<key>Flags</key>
+			<string></string>
+			<key>Sense</key>
+			<string>new-line</string>
+			<key>Source</key>
+			<string>Engine</string>
+			<key>Spoken</key>
+			<string>new line</string>
+			<key>Written</key>
+			<string></string>
+			<key>rewrites</key>
+			<array>
+				<dict>
+					<key>RewriteForm</key>
+					<string>
+</string>
+					<key>bIsRewriteFormActive</key>
+					<true/>
+					<key>bParamValue</key>
+					<false/>
+					<key>clientData</key>
+					<integer>0</integer>
+					<key>hParam</key>
+					<integer>18446744073709551615</integer>
+					<key>pControl</key>
+					<array/>
+					<key>pLeftContextTags</key>
+					<array/>
+					<key>pRightContextTags</key>
+					<array/>
+				</dict>
+			</array>
+		</dict>
+		<key>swank</key>
+		<dict>
+			<key>Flags</key>
+			<string></string>
+			<key>Sense</key>
+			<string></string>
+			<key>Source</key>
+			<string>Engine</string>
+			<key>Spoken</key>
+			<string></string>
+			<key>Written</key>
+			<string>swank</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
