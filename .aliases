@@ -1,9 +1,30 @@
-#!/bin/bash
-alias aliases="source ~/.aliases"
-alias profile="source ~/.profile"
+#!/bin/sh
+# alias =''
+alias aliases="source $CONFIG/.aliases"
+alias profile="source $CONFIG/.profile"
 
 
-#
+# Natural Language Commands
+
+alias list="ls -1aFG"
+alias remove="rm -f"
+alias concatenate="cat"
+alias processes="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
+
+
+# fish
+
+alias fishing="Max ~/.config/fish/config.fish"
+
+
+# Emacs
+
+alias Max="emacsclient  --alternate-editor emacs  $argv"
+alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+alias e="/usr/bin/emacs -nw"
+
+
+# built-ins
 
 alias c=cd
 alias cd~="cd ~"
@@ -24,47 +45,36 @@ alias cde="cd ~/Dropbox/etc"
 alias cdh="cd /server/hadoop"
 alias cdc="cd ~/config"
 
-alias ls="ls -aFG"
-alias l="ls | cat"
-
-alias rm="rm -f" # -P for security
-alias rmr="rm -r"
-alias rmt="rm *~ .*~ \#*\# .\#* matlab_crash_dump.* java.log.* *.pyc *.class __pycache__/*.pyc *.agdai *.hi *.hout *.o"
+alias rmr="rm -fr"
+alias rmt="rm -f *~ .*~ \#*\# .\#* matlab_crash_dump.* java.log.* *.pyc *.class __pycache__/*.pyc *.agdai *.hi *.hout *.o"
 
 alias c7="chmod 700"
-
-alias ps="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
 
 
 # programming languages
 
-alias h="runhaskell"
+# alias h="runhaskell"
 
-alias jvmi="java -jar ~/bin/REPL.jar"
+# alias jvmi="java -jar ~/bin/REPL.jar"
+# alias clojure="java -cp ~/bin/clojure-1.6.0.jar clojure.main"
+# alias s="scala"
 
-alias ip="ipython"
-alias p="python3"
-alias p3="python3"
-alias p2="python2.7"
+# alias ip="ipython"
+# alias p="python3"
+# alias p3="python3"
+# alias p2="python2.7"
 
-alias e="emacs -q"
+# alias pl="prolog -q -t 'main.' -s"
 
-alias clojure="java -cp ~/bin/clojure-1.6.0.jar clojure.main"
-
-alias s="scala"
-
-alias a="agda"
-alias ai="agda -I"
-
-alias pl="prolog -q -t 'main.' -s"
-
-alias coqtop="coqtop -I . -emacs -impredicative-set"
-alias twelf="/Applications/Twelf/bin/twelf-server"
+# alias a="agda"
+# alias ai="agda -I"
+# alias coqtop="coqtop -I . -emacs -impredicative-set"
+# alias twelf="/Applications/Twelf/bin/twelf-server"
 
 
-#
+# working
 
-alias test="ant clean test"
+# alias test="ant clean test"
 
 alias r="grep -E --color=auto -i"
 
@@ -74,12 +84,4 @@ alias dif="git dif"
 alias ga="git amend"
 alias gorc="git status --porcelain | cut -d ' ' -f 2 | tr '\n' ' '"
 
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-alias e="/usr/bin/emacs -nw"
-
-
-# local config overrides global config
-if [ -f ~/config/local/.aliases ]
-then source ~/config/local/.aliases
-fi
 

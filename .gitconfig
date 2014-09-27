@@ -30,7 +30,7 @@
 	lsd = log --graph --decorate --pretty=oneline --abbrev-commit --all
         hist = log --pretty=format:"%h%x09%ad%x09%an%x09%s" --date=relative
 
-        up = !sh -c 'git remote add origin $1 && git fetch origin && git branch --set-upstream master origin/master' -
+        up = !sh -c 'git remote add origin $1 && git pull origin && git branch --set-upstream master origin/master' -
 
 	s = status
         p = status --porcelain
