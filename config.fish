@@ -1,8 +1,8 @@
 #!/bin/fish
-set PATH ~/bin $PATH
+set PATH ~/bin /usr/local/Cellar/pkg-config/0.28/bin/ $PATH
 echo 'PATH =' $PATH
 
-source $CONFIG/.aliases   
+source $CONFIG/.aliases
 
 if test -e $CONFIG/local/.aliases
  source    $CONFIG/local/.aliases

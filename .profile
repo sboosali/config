@@ -10,21 +10,30 @@ source $CONFIG/.aliases
 if [ -f     $CONFIG/local/.aliases ]
 then source $CONFIG/local/.aliases
 fi
+
+alias commit="export EMACSPATH=; git commit"
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Paths
-export PATH=/usr/local/bin:$PATH # Brew's /usr/local/bin should override System's /usr/bin
-export PATH=~/bin:$PATH
-PATH=/Library/Frameworks/Python.framework/Versions/3.3/bin:$PATH
-PATH=$PATH:~/bin:~/bin/abcmidi
-PATH=$PATH:~/sox:/usr/texbin:/usr/X11/bin
-PATH=$PATH:~/Library/Haskell/bin
-PATH=$PATH:/Applications/CoqIdE_8.4.app/Contents/Resources/bin
-PATH=$PATH:~/bin/scala/bin
-# Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+PATH=~/bin:$PATH
+PATH=/usr/local/bin:$PATH # Brew's /usr/local/bin should override
+                          # System's /usr/bin
+PATH=/usr/local/opt/llvm/bin:$PATH
+# PATH=/Library/Frameworks/Python.framework/Versions/3.3/bin:$PATH
+# PATH=$PATH:~/sox:/usr/texbin:/usr/X11/bin
+# PATH=$PATH:~/Library/Haskell/bin
+# PATH=$PATH:/Applications/CoqIdE_8.4.app/Contents/Resources/bin
+# PATH=$PATH:~/bin/scala/bin
+# PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
+PATH=.cabal-sandbox/bin:~/.cabal/bin:$PATH  # sandbox cabal and user cabal
 export PATH
+echo 'PATH =' $(echo $PATH | tr ':' '\n') 
+echo
+
 
 # show current branch when in git repo (or descendent thereof)
 source ~/bin/git-prompt.sh
@@ -114,6 +123,38 @@ prolog -q -s path.pl -t 'halt.'
 
 SPHINX_HOME=~/bin/sphinx4/sphinx4-5prealpha
 alias transcribe="java -jar $SPHINX_HOME/bin/Transcriber.jar"
+
+alias clean-Haskell="remove $1.{dyn_hi,dyn_o,hi,o}"
+
+function backup {
+ BACKUP=/Volumes/Backup/Backups
+ cp ~/diary/*        $BACKUP/diary/
+ cp ~/Dropbox/*.note $BACKUP/Dropbox/
+ cp ~/Haskell/*.{hs,lhs} $BACKUP/Haskell/
+ #TODO http://superuser.com/questions/299938/how-can-i-recursively-copy-files-by-file-extension-preserving-directory-structu
+}
+
+# converts video to audio, and opens it in iTunes
+function blind {
+ NAME="${1%%.*}"
+ INPUT="$NAME.mp4"
+ OUTPUT="$NAME.m4a"
+ # echo $NAME
+ ffmpeg  -i "$INPUT"  -c copy "$OUTPUT"
+ open "$OUTPUT"
+}
+
+function cobra () {
+python -c "
+import sys
+x = list(sys.stdin)[0].strip().split()
+print($@)
+"
+}
+
+function space () {
+stat -f%z "$@" | cobra '(float(x[0])/1e9, "gigabytes")'
+}
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

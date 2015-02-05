@@ -8,8 +8,10 @@ alias profile="source $CONFIG/.profile"
 
 alias list="ls -1aFG"
 alias remove="rm -f"
-alias concatenate="cat"
+alias show="cat"
 alias processes="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
+alias get="git"
+alias grab="grep"
 
 
 # fish
