@@ -64,15 +64,15 @@
 	c = commit
 	cm = commit -m
 	ca = "!git commit --amend && echo && git status"
-        amend = "!git commit -a --amend -C HEAD && git status"
+	amend = commit --amend -C HEAD --no-verify
 
         m = merge
         ma = merge --abort
 
 	unedit = checkout --
 	unstage = reset HEAD --
-        uncommit = git reset --soft HEAD~1
-        recommit = git commit -c ORIG_HEAD
+        uncommit = reset --soft HEAD~1
+        recommit = commit -c ORIG_HEAD
 
         r = rebase
         rc = rebase --continue

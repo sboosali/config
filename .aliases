@@ -55,6 +55,9 @@ alias c7="chmod 700"
 
 # programming languages
 
+# I'm always in a sandbox 
+alias Haskell="cabal exec -- runhaskell"
+
 # alias h="runhaskell"
 
 # alias jvmi="java -jar ~/bin/REPL.jar"

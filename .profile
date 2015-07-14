@@ -3,6 +3,8 @@
 # (maybe) -> $CONFIG/local/.aliases
 # (maybe) -> $CONFIG/local/.profile
 
+# symbolically link to (I just use source)
+# ln -s ~/.profile -> $CONFIG/.profile -> $CONFIG/.aliases
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 source $CONFIG/.aliases
@@ -11,7 +13,7 @@ if [ -f     $CONFIG/local/.aliases ]
 then source $CONFIG/local/.aliases
 fi
 
-alias commit="export EMACSPATH=; git commit"
+alias commit="export EMACSPATH=; git add -u; git commit"
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
@@ -20,6 +22,13 @@ alias commit="export EMACSPATH=; git commit"
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Paths
 PATH=~/bin:$PATH
+
+# Add GHC 7.10.1 to the PATH, via https://ghcformacosx.github.io/
+export GHC_DOT_APP="/Applications/ghc-7.10.1.app"
+if [ -d "$GHC_DOT_APP" ]; then
+  export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+fi
+
 PATH=/usr/local/bin:$PATH # Brew's /usr/local/bin should override
                           # System's /usr/bin
 PATH=/usr/local/opt/llvm/bin:$PATH
@@ -31,7 +40,7 @@ PATH=/usr/local/opt/llvm/bin:$PATH
 # PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 PATH=.cabal-sandbox/bin:~/.cabal/bin:$PATH  # sandbox cabal and user cabal
 export PATH
-echo 'PATH =' $(echo $PATH | tr ':' '\n') 
+echo 'PATH =' $(echo $PATH | tr ':' '\n')
 echo
 
 
@@ -155,6 +164,15 @@ print($@)
 function space () {
 stat -f%z "$@" | cobra '(float(x[0])/1e9, "gigabytes")'
 }
+
+function brush () {
+# synonym for "touch"
+mkdir -p `dirname "$1"`
+touch "$1"
+}
+
+# stupid OS X demons: iCloud synchronizing, update nagging, spellchecking
+killall EscrowSecurityAlert nbagent LaterAgent AppleSpell > /dev/null
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
