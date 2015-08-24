@@ -13,6 +13,7 @@ if [ -f     $CONFIG/local/.aliases ]
 then source $CONFIG/local/.aliases
 fi
 
+# when run from a terminal in Emacs, the EMACSPATH as already been exported; EMACSPATH is used during Emacs initialization for "sub-app" custom initialization, by checking the name of the app e.g. Work.app versus Notes.app; we save time and avoid the wrong settings by not running these "sub-app"s
 alias commit="export EMACSPATH=; git add -u; git commit"
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -43,6 +44,8 @@ export PATH
 echo 'PATH =' $(echo $PATH | tr ':' '\n')
 echo
 
+PATH=~/config/bin:$PATH
+
 
 # show current branch when in git repo (or descendent thereof)
 source ~/bin/git-prompt.sh
@@ -50,8 +53,30 @@ PS1='\w$(__git_ps1 " (%s)") \$ '
 PS1="\n$PS1"
 #export PS1="\n\w \[\033[31m\]\`git branch 2> /dev/null | grep ^[\*] | sed -E  s/^\\\\\\\\\*\ \(.+\)$/\(\\\\\\\\\1\)\ /\`\[\033[37m\]$\[\033[00m\] "
 
+
+
+# ln -sf /Applications/Emacs.app/Contents/MacOS/Emacs                       /usr/local/bin/emacs
+# ln -sf /Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_5/emacsclient /usr/local/bin/emacsclient
+# emacsclient --alternate-editor Emacs "$@"  # Emacs client "this application will not run on your computer" 
+# ln -sf /Applications/Emacs.app/Contents/MacOS/Emacs /usr/local/bin/emacsclient
+
+emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+# alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+# emacs --file 
+
+function edit () { 
+emacs "$@"
+}
+
+
 # editors
-export VISUAL=Max
+# "The editor used to edit the commit log message will be chosen
+#    from the GIT_EDITOR environment variable, the core.editor configuration
+#    variable, the VISUAL environment variable, or the EDITOR environment
+#    variable (in that order)."
+export GIT_EDITOR=emacs
+export VISUAL=emacs
+export EDITOR=emacs
 
 # bash history
 shopt -s histappend

@@ -16,15 +16,13 @@ alias grab="grep"
 
 # fish
 
-alias fishing="Max ~/.config/fish/config.fish"
+# alias fishing="Max ~/.config/fish/config.fish"
 
 
 # Emacs
-
-alias Max="emacsclient  --alternate-editor emacs  $argv"
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-alias e="/usr/bin/emacs -nw"
-
+# make bash function
+# alias edit="emacsclient  --alternate-editor '/Applications/Server.app/Contents/MacOS/Emacs'  $argv"
+# alias emacsserver="/Applications/Server.app/Contents/MacOS/Emacs --daemon=eserver"
 
 # built-ins
 
