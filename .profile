@@ -1,24 +1,20 @@
 #!/bin/bash
+
 # ~/.bashrc -> ~/.profile -> $CONFIG/.profile -> $CONFIG/.aliases
 # (maybe) -> $CONFIG/local/.aliases
 # (maybe) -> $CONFIG/local/.profile
 
+# flow:
+# ~/.profile -> $CONFIG/.profile -> $CONFIG/.aliases
+
 # symbolically link to (I just use source)
-# ln -s ~/.profile -> $CONFIG/.profile -> $CONFIG/.aliases
+# ln -s ~/.profile $CONFIG/.profile
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 source $CONFIG/.aliases
-# local config overrides global config
-if [ -f     $CONFIG/local/.aliases ]
-then source $CONFIG/local/.aliases
-fi
 
 # when run from a terminal in Emacs, the EMACSPATH as already been exported; EMACSPATH is used during Emacs initialization for "sub-app" custom initialization, by checking the name of the app e.g. Work.app versus Notes.app; we save time and avoid the wrong settings by not running these "sub-app"s
 alias commit="export EMACSPATH=; git add -u; git commit"
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-
-
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Paths
@@ -40,12 +36,11 @@ PATH=/usr/local/opt/llvm/bin:$PATH
 # PATH=$PATH:~/bin/scala/bin
 # PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 PATH=.cabal-sandbox/bin:~/.cabal/bin:$PATH  # sandbox cabal and user cabal
-export PATH
-echo 'PATH =' $(echo $PATH | tr ':' '\n')
-echo
 
 PATH=~/config/bin:$PATH
 
+echo 'PATH =' $(echo $PATH | tr ':' '\n')
+echo
 
 # show current branch when in git repo (or descendent thereof)
 source ~/bin/git-prompt.sh

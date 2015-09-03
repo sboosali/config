@@ -93,3 +93,4 @@ alias e="/usr/bin/emacs -nw"
 if [ -f ~/config/local/.aliases ]
 then source ~/config/local/.aliases
 fi
+
