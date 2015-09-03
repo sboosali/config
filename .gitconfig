@@ -13,7 +13,7 @@
 	autocrlf = false
 
 	editor = emacs
-	pager = 
+#	pager = 
 
 [ui]
 	color = true
@@ -24,11 +24,13 @@
 [alias]
 	ch = rev-parse --verify HEAD
 	dif = diff --unified=1 --color-words --no-index
-	rmrm = "rm "
+	rmrm = !git ls-files --deleted -z | xargs -0 git rm
+        track = checkout --track
 
+        l = log
         g = log --graph --oneline --decorate
 	lsd = log --graph --decorate --pretty=oneline --abbrev-commit --all
-        hist = log --pretty=format:"%h%x09%ad%x09%an%x09%s" --date=relative
+        lp = log --format='%ad %x09 %h %x09 %s' --date=relative
         
         up = !sh -c 'git remote add origin $1 && git fetch origin && git branch --set-upstream master origin/master' -
 
@@ -40,6 +42,7 @@
         co = checkout
         cb = checkout -b
 	com = checkout master
+        backup = !sh -c 'git checkout -b backup/$(git rev-parse --abbrev-ref HEAD) && git checkout - && git branch'
 
 	d = diff
         dm = diff master
@@ -56,7 +59,7 @@
 	ca = "!git commit --amend && echo && git status"
         amend = "!git add -u && git commit --amend --no-edit && echo && git status"
 
-        m = merge
+        m = merge --no-ff
         ma = merge --abort
 
 	unedit = checkout --
@@ -66,6 +69,18 @@
         r = rebase
         rc = rebase --continue
         ra = rebase --abort
+        rpm = rebase -p master
 
 [push]
 	default = current
+
+
+[diff]
+        tool = vimdiff
+[merge]
+        tool = emerge
+        conflictstyle = diff3
+[mergetool]
+        prompt = false
+[mergetool "emerge"]
+        path = /Applications/Emacs.app/Contents/MacOS/Emacs

@@ -35,6 +35,8 @@ alias c7="chmod 700"
 
 alias ps="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
 
+alias hd="head"
+
 
 # programming languages
 
