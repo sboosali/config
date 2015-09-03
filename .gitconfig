@@ -10,13 +10,22 @@
 
 [core]
 	filemode = false
+
 	autocrlf = false
+	# autocrlf = input
+        # convert CRLF to LF on commit i.e. "input"
+        # (don't convert LF to CRLF on checkout)
 
+        # GIT_EDITOR -> core.editor -> VISUAL -> EDITOR
 	editor = emacs
-#	pager = 
 
-[ui]
-	color = true
+	pager =
+        # blank means no pager
+
+	whitespace = trailing-space
+        # colors trailing-space on `git diff`
+
+# commit.template =
 
 [color]
 	ui = true
@@ -26,12 +35,13 @@
 	dif = diff --unified=1 --color-words --no-index
 	rmrm = !git ls-files --deleted -z | xargs -0 git rm
         track = checkout --track
+	remove = !sh -c 'git ls-files -d | xargs git rm'
 
         l = log
         g = log --graph --oneline --decorate
 	lsd = log --graph --decorate --pretty=oneline --abbrev-commit --all
         lp = log --format='%ad %x09 %h %x09 %s' --date=relative
-        
+        history = log --pretty=format:"%h%x09%ad%x09%an%x09%s" --date=relative
         up = !sh -c 'git remote add origin $1 && git fetch origin && git branch --set-upstream master origin/master' -
 
 	s = status
@@ -44,6 +54,7 @@
 	com = checkout master
         backup = !sh -c 'git checkout -b backup/$(git rev-parse --abbrev-ref HEAD) && git checkout - && git branch'
 
+	difference = diff
 	d = diff
         dm = diff master
         df = diff --name-only
@@ -57,14 +68,16 @@
 	c = commit
 	cm = commit -m
 	ca = "!git commit --amend && echo && git status"
-        amend = "!git add -u && git commit --amend --no-edit && echo && git status"
+        # amend = "!git add -u && git commit --amend --no-edit && echo && git status"
+	amend = commit --amend -C HEAD --no-verify
 
         m = merge --no-ff
         ma = merge --abort
 
 	unedit = checkout --
 	unstage = reset HEAD --
-        uncommit = checkout master --
+        uncommit = reset --soft HEAD~1
+        recommit = commit -c ORIG_HEAD
 
         r = rebase
         rc = rebase --continue

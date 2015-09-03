@@ -1,9 +1,30 @@
-#!/bin/bash
-alias aliases="source ~/.aliases"
-alias profile="source ~/.profile"
+#!/bin/sh
+# alias =''
+alias aliases="source $CONFIG/.aliases"
+alias profile="source $CONFIG/.profile"
 
 
-#
+# Natural Language Commands
+
+alias list="ls -1aFG"
+alias remove="rm -f"
+alias show="cat"
+alias processes="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
+alias get="git"
+alias grab="grep"
+
+
+# fish
+
+# alias fishing="Max ~/.config/fish/config.fish"
+
+
+# Emacs
+# make bash function
+# alias edit="emacsclient  --alternate-editor '/Applications/Server.app/Contents/MacOS/Emacs'  $argv"
+# alias emacsserver="/Applications/Server.app/Contents/MacOS/Emacs --daemon=eserver"
+
+# built-ins
 
 alias c=cd
 alias cd~="cd ~"
@@ -27,42 +48,33 @@ alias cdc="cd ~/config"
 alias ls="ls -aFG"
 alias l="ls | cat"
 
-alias rm="rm -f" # -P for security
-alias rmr="rm -r"
-alias rmt="rm *~ .*~ \#*\# .\#* matlab_crash_dump.* java.log.* *.pyc *.class __pycache__/*.pyc *.agdai *.hi *.hout *.o"
+alias rm="rm -f"
+alias rmr="rm -rf"
+alias rmt="rm -f *~ .*~ \#*\# .\#* matlab_crash_dump.* java.log.* *.pyc *.class __pycache__/*.pyc *.agdai *.hi *.hout *.o"
 
 alias c7="chmod 700"
 
 alias ps="ps -cax -o \"command, pid, %mem, %cpu, user, start, \" "
 
-alias hd="head"
-
-
 # programming languages
 
+# I'm always in a sandbox 
+alias Haskell="cabal exec -- runhaskell"
+
 alias jvmi="java -jar ~/bin/REPL.jar"
+alias clojure="java -cp ~/bin/clojure-1.6.0.jar clojure.main"
+alias s="scala"
 
 alias ip="ipython"
 alias p="python3"
 alias p3="python3"
 alias p2="python2.7"
 
-alias e="emacs -q"
-
-alias clojure="java -cp ~/bin/clojure-1.6.0.jar clojure.main"
-
-alias s="scala"
-
-alias a="agda"
-alias ai="agda -I"
-
 alias pl="prolog -q -t 'main.' -s"
-
 alias coqtop="coqtop -I . -emacs -impredicative-set"
 alias twelf="/Applications/Twelf/bin/twelf-server"
 
-
-#
+# working
 
 alias test="ant clean test"
 
@@ -77,9 +89,7 @@ alias gorc="git status --porcelain | cut -d ' ' -f 2 | tr '\n' ' '"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
 alias e="/usr/bin/emacs -nw"
 
-
 # local config overrides global config
 if [ -f ~/config/local/.aliases ]
 then source ~/config/local/.aliases
 fi
-
