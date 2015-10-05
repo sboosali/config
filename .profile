@@ -146,10 +146,6 @@ function download {
     curl $URL > $FILE
 }
 
-function pl {
-prolog -q -s path.pl -t 'halt.'
-}
-
 SPHINX_HOME=~/bin/sphinx4/sphinx4-5prealpha
 alias transcribe="java -jar $SPHINX_HOME/bin/Transcriber.jar"
 
