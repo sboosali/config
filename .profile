@@ -35,7 +35,9 @@ PATH=/usr/local/opt/llvm/bin:$PATH
 # PATH=$PATH:/Applications/CoqIdE_8.4.app/Contents/Resources/bin
 # PATH=$PATH:~/bin/scala/bin
 # PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
-PATH=.cabal-sandbox/bin:~/.cabal/bin:$PATH  # sandbox cabal and user cabal
+
+# sandbox cabal (relative path) and Emacs cabal and user cabal. 
+PATH=.cabal-sandbox/bin:~/.emacs.d/.cabal-sandbox/bin:~/.cabal/bin:$PATH  
 
 PATH=~/config/bin:$PATH
 
