@@ -85,12 +85,12 @@ alias gl="git status"
 alias dif="git dif"
 alias ga="git amend"
 alias gorc="git status --porcelain | cut -d ' ' -f 2 | tr '\n' ' '"
-
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
 alias e="/usr/bin/emacs -nw"
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # local config overrides global config
 if [ -f ~/config/local/.aliases ]
 then source ~/config/local/.aliases
 fi
-
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

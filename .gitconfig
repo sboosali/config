@@ -23,6 +23,7 @@
         # blank means no pager
 
 	whitespace = trailing-space
+	excludesfile = /Users/sboosalis/config/git/.gitignore
         # colors trailing-space on `git diff`
 
 # commit.template =

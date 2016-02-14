@@ -10,6 +10,8 @@
 # symbolically link to (I just use source)
 # ln -s ~/.profile $CONFIG/.profile
 
+CONFIG=~/config # TODO here? 
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 source $CONFIG/.aliases
 
@@ -18,13 +20,19 @@ alias commit="export EMACSPATH=; git add -u; git commit"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Paths
-PATH=~/bin:$PATH
+export PATH=~/bin:$PATH
 
-# Add GHC 7.10.1 to the PATH, via https://ghcformacosx.github.io/
-export GHC_DOT_APP="/Applications/ghc-7.10.1.app"
-if [ -d "$GHC_DOT_APP" ]; then
-  export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-fi
+# # Haskell: Add GHC 7.10.1 to the PATH, via https://ghcformacosx.github.io/
+# export GHC_DOT_APP="/Applications/ghc-7.10.1.app"
+# if [ -d "$GHC_DOT_APP" ]; then
+#   export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+# fi
+
+# Haskell: stack 
+# export PATH=${HOME}/.stack/programs/x86_64-osx/ghc-7.10.3/bin:$PATH  
+
+# Haskell: sandbox cabal (relative path) and Emacs cabal and user cabal. 
+export PATH=.cabal-sandbox/bin:~/.emacs.d/.cabal-sandbox/bin:~/.cabal/bin:$PATH  
 
 PATH=/usr/local/bin:$PATH # Brew's /usr/local/bin should override
                           # System's /usr/bin
@@ -35,9 +43,6 @@ PATH=/usr/local/opt/llvm/bin:$PATH
 # PATH=$PATH:/Applications/CoqIdE_8.4.app/Contents/Resources/bin
 # PATH=$PATH:~/bin/scala/bin
 # PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
-
-# sandbox cabal (relative path) and Emacs cabal and user cabal. 
-PATH=.cabal-sandbox/bin:~/.emacs.d/.cabal-sandbox/bin:~/.cabal/bin:$PATH  
 
 PATH=~/config/bin:$PATH
 
@@ -192,6 +197,9 @@ touch "$1"
 # stupid OS X demons: iCloud synchronizing, update nagging, spellchecking
 killall EscrowSecurityAlert nbagent LaterAgent AppleSpell > /dev/null
 
+function show-path () {
+echo $PATH | tr ':' '\n'
+}
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # local config extends global config

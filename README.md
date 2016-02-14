@@ -1,4 +1,10 @@
 
+Setup 
+===
+$ chmod +x setup.sh 
+$ ./setup.sh 
+
+
 Foot Pedal
 ===
 
@@ -24,4 +30,14 @@ brew list
 cabal list --installed
 pip freeze
 
+
+Daemons
+=== 
+killall -KILL distnoted
+
+
+Haskell
+===
+stack new my-package ~/config/stack/templates/spirosboosalis.hsfiles -p "module-name:MyPackage" -p "category:Development"
+stack new my-script  ~/config/stack/templates/shell-monad.hsfiles 
 
