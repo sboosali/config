@@ -1,0 +1,19 @@
+{-# START_FILE {{name}}.hs #-}
+#!/usr/bin/env stack
+-- stack --resolver lts-5.0 --install-ghc runghc --package shell-monad --package text 
+
+{-# LANGUAGE OverloadedStrings, ExtendedDefaultRules #-}
+{-# OPTIONS_GHC -fno-warn-type-defaults #-}
+
+import Control.Monad.Shell
+import qualified Data.Text.Lazy as L
+default (L.Text)
+
+-- $ stack {{name}}.hs
+-- $ open https://hackage.haskell.org/package/shell-monad/docs/Control-Monad-Shell.html
+
+main = script $ do
+  name <- newVar "name"
+  readVar name
+  cmd "echo" "hello" name
+

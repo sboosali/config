@@ -1,0 +1,14 @@
+# https://github.com/commercialhaskell/stack/blob/release/doc/yaml_configuration.md
+
+templates:
+  params:
+    author-email: samboosalis@gmail.com
+    author-name: Spiros Boosalis
+    copyright: 2015 Spiros Boosalis
+    github-username: sboosali
+    get-module-name: function() {
+      return function(text, render) {
+        return render(text+"testtttttttttttttt")
+      } 
+    category: TODO 
+    module-name: TODO 
