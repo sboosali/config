@@ -87,9 +87,12 @@ main = defaultMain
 
 
 {-# START_FILE stack.yaml #-}
-packages: []
-extra-deps: []
 resolver: lts-5.5
+
+packages:
+- .
+
+extra-deps: []
 
 
 {-# START_FILE library/{{module-name}}.hs #-}
