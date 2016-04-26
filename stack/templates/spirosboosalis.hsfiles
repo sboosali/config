@@ -86,6 +86,12 @@ import Distribution.Simple
 main = defaultMain
 
 
+{-# START_FILE stack.yaml #-}
+packages: []
+extra-deps: []
+resolver: lts-5.5
+
+
 {-# START_FILE library/{{module-name}}.hs #-}
 module {{module-name}} where
 
