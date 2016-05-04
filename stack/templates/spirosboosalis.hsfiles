@@ -1,8 +1,8 @@
 {-# START_FILE {{name}}.cabal #-}
 name:                {{name}}
 version:             0.0.0
-synopsis:            TODO 
-description:         TODO 
+synopsis:            TODO
+description:         TODO
 homepage:            http://github.com/{{github-username}}/{{name}}#readme
 license:             BSD3
 license-file:        LICENSE
@@ -20,60 +20,123 @@ source-repository head
 
 
 library
- hs-source-dirs:      library
+ hs-source-dirs:      sources
  default-language:    Haskell2010
- ghc-options:         -Wall
+ ghc-options:         -Wall -fno-warn-unticked-promoted-constructors
+ default-extensions: AutoDeriveTypeable DeriveDataTypeable 
+                     DeriveGeneric DeriveFunctor DeriveFoldable DeriveTraversable
+                     LambdaCase EmptyDataDecls TypeOperators BangPatterns Arrows
+                     MultiWayIf DoAndIfThenElse PostfixOperators TupleSections
+                     MultiParamTypeClasses FlexibleContexts FlexibleInstances 
+                     TypeFamilies FunctionalDependencies
+                     ExplicitForAll StandaloneDeriving 
 
- exposed-modules:   
-  {{module-name}} 
-  {{module-name}}.Main  
+ exposed-modules:
+  {{module-name}}
+  {{module-name}}.Types
+  {{module-name}}.Main
 
- build-depends:    
-    base >=4.7 && <5 
-  -- , lens 
+ other-modules:
+  {{module-name}}.Extra
 
+ build-depends:
+    base >=4.7 && <5
+
+  -- ,
+  -- , transformers
+  -- , mtl
+  -- , containers
+  -- , bytestring
+  -- , stm
+  -- , template-haskell
+
+  , deepseq 
+  -- ,
+  -- , semigroups
+  -- , lens
+  -- , exceptions
+  -- , free
+  -- , bifunctors 
+  -- , profunctors 
+  -- , either
+  -- , pipes  
+  -- , formatting 
+  -- , servant
+  -- , Earley
+  -- , split
+  -- , interpolatedstring-perl6 
+  -- , wl-pprint-text
+  -- , text
+  -- , aeson 
+  -- , hashable
+  -- , unordered-containers
+  -- , async
+  -- , parallel
 
 -- $ stack exec {{name}}
 executable {{name}}
- hs-source-dirs:      executables 
+ hs-source-dirs:      executables
  main-is:             Main.hs
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
- build-depends:     
+ build-depends:
     base
   , {{name}}
 
 
--- $ stack test {{name}} 
+-- $ stack test doctest
 test-suite doctest
  hs-source-dirs:      tests
  main-is:             DocTest.hs
  type:                exitcode-stdio-1.0
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
- build-depends:     
-  base
+ build-depends:
+    base
   , {{name}}
-  , doctest ==0.10.*
+  , doctest 
 
--- $ stack test {{name}} 
+
+-- $ stack test unittest
 test-suite unittest
  hs-source-dirs:      tests
  main-is:             UnitTest.hs
  type:                exitcode-stdio-1.0
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
- other-modules: 
+ other-modules:
   {{module-name}}.Test
 
- build-depends:     
-  base
+ build-depends:
+    base
   , {{name}}
   , hspec ==2.2.*
   , QuickCheck ==2.8.*
+  -- , tasty
+  -- , tasty-quickcheck
+
+
+-- $ stack bench
+benchmark command
+ hs-source-dirs:      benchmarks
+ main-is:             Bench.hs
+ type:                exitcode-stdio-1.0
+
+ default-language: Haskell2010
+ ghc-options:      -Wall -threaded -rtsopts -with-rtsopts=-N
+
+ build-depends:
+    base 
+  , {{name}}
+  , commands-core 
+  , criterion
+  , deepseq 
 
 
 {-# START_FILE cabal.config #-}
@@ -95,17 +158,58 @@ packages:
 extra-deps: []
 
 
-{-# START_FILE library/{{module-name}}.hs #-}
+{-# START_FILE sources/{{module-name}}.hs #-}
 module {{module-name}} where
+import {{module-name}}.Types
 
 
-{-# START_FILE library/{{module-name}}/Main.hs #-}
-{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+{-|
+
+>>> _{{module-name}}
+"{{module-name}}"
+
+-}
+_{{module-name}} = "{{module-name}}"
+
+
+{-# START_FILE sources/{{module-name}}/Types.hs #-}
+module {{module-name}}.Types where
+import {{module-name}}.Extra
+
+
+{-# START_FILE sources/{{module-name}}/Main.hs #-}
 module {{module-name}}.Main where
 import {{module-name}}
 
+main :: IO ()
 main = do
- print "{{module-name}}"
+ print $ _{{module-name}}
+
+
+{-# START_FILE sources/{{module-name}}/Extra.hs #-}
+module {{module-name}}.Extra
+ ( Generic, Data, Monoid
+ , NFData, Semigroup
+ , nothing, 
+ ) where 
+
+import Control.DeepSeq (NFData) 
+import Data.Semigroup (Semigroup) 
+
+import GHC.Generics (Generic) 
+import Data.Data (Data)
+
+nothing :: (Monad m) => m ()
+nothing = return ()
+
+maybe2bool :: Maybe a -> Bool
+maybe2bool = maybe False (const True) 
+
+either2maybe :: Either e a -> Maybe a 
+either2maybe = either (const Nothing) Just 
+
+either2bool :: Either e a -> Bool
+either2bool = either (const False) (const True) 
 
 
 {-# START_FILE tests/{{module-name}}/Test.hs #-}
@@ -119,8 +223,10 @@ main = do
 {-# START_FILE tests/DocTest.hs #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 import Test.DocTest
-main = do
- doctest ["{{module-name}}"]
+
+main = doctest
+ [ "sources/{{module-name}}.hs"
+ ]
 
 
 {-# START_FILE tests/UnitTest.hs #-}
@@ -128,7 +234,69 @@ main = do
 
 
 {-# START_FILE executables/Main.hs #-}
-import {{module-name}}.Main
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+import qualified {{module-name}}.Main
+
+main = {{module-name}}.Main.main
+
+
+{-# START_FILE benchmarks/Bench.hs #-}
+import {{module-name}}
+import Criterion.Main
+
+main = defaultMain [
+  bgroup "{{module-name}}"
+    [ bench "1" $ nf   length [1..1000]
+    , bench "2" $ whnf length [1..1000]
+    ]
+  ]
+
+
+{-# START_FILE HLint.hs #-}
+{-# LANGUAGE PackageImports, TemplateHaskell #-}
+import "hint" HLint.Default
+import "hint" HLint.Dollar
+import "hint" HLint.Generalise
+ignore "Use unwords"
+ignore "Use map once"
+ignore "Use =<<"
+ignore "Functor law"
+
+
+{-# START_FILE .gitignore #-}
+# my
+ignore/
+notes
+goals
+TODO
+cbits/main
+.projectile
+
+# Haskell
+dist
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+.virtualenv
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+cabal.config
+report.html
+.stack-work/
+
+# Emacs
+\#*
+*~
+.#*
+\#*\#
+*.log
+TAGS
+
+# OS X
+.DS_Store
 
 
 {-# START_FILE LICENSE #-}
@@ -168,60 +336,3 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # {{name}}
 
 TODO
-
-
-{-# START_FILE Makefile #-}
-PACKAGE = {{name}}
-
-HC = cabal exec -- ghc
-
-CODE = sources # tests
-
-default: check
-
-all: build test run document style
-
-configure:
-	cabal configure --enable-tests
-
-build: configure
-	cabal build
-
-run:
-	cabal run
-
-test:
-	cabal configure --enable-tests
-	cabal test && echo && cat dist/test/*-tests.log
-
-bench:
-	cabal configure --enable-benchmarks && cabal bench
-
-document:
-	cabal haddock
-	open dist/doc/html/$(PACKAGE)/index.html
-
-hyperlink: 
-	cabal haddock --with-haddock="$(HOME)/haddock/.cabal-sandbox/bin/haddock" --haddock-options="--hyperlinked-source"
-	open dist/doc/html/$(PACKAGE)/index.html
-
-style:
-	hlint --hint=HLint.hs  *.hs $(CODE)
-
-fix:
-	git vogue fix --all
-
-check:
-#	cabal build --ghc-options="-fforce-recomp -fno-code"
-	cabal build --ghc-options="-fno-code"
-
-clean:
-	cabal clean 
-	rm -f Main *.{o,hi,dyn_o,dyn_hi} *.{prof,hp,aux,ps} 
-
-fresh: clean
-	rm -fr dist
-
-.PHONY: default clean fresh all configure build test document hyperlink style check fix bench
-
-
