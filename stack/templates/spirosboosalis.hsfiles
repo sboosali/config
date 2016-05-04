@@ -23,8 +23,8 @@ library
  hs-source-dirs:      sources
  default-language:    Haskell2010
  ghc-options:         -Wall -fno-warn-unticked-promoted-constructors
- default-extensions: AutoDeriveTypeable DeriveDataTypeable 
-                     DeriveGeneric DeriveFunctor DeriveFoldable DeriveTraversable
+ default-extensions: AutoDeriveTypeable DeriveDataTypeable DeriveGeneric
+                     DeriveFunctor DeriveFoldable DeriveTraversable
                      LambdaCase EmptyDataDecls TypeOperators BangPatterns Arrows
                      MultiWayIf DoAndIfThenElse PostfixOperators TupleSections
                      MultiParamTypeClasses FlexibleContexts FlexibleInstances 
