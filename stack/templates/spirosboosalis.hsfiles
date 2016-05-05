@@ -170,6 +170,7 @@ import {{module-name}}.Types()
 "{{module-name}}"
 
 -}
+_{{module-name}} :: String
 _{{module-name}} = "{{module-name}}"
 
 
@@ -189,9 +190,11 @@ main = do
 
 {-# START_FILE sources/{{module-name}}/Extra.hs #-}
 module {{module-name}}.Extra
- ( Generic, Data, Monoid
- , NFData, Semigroup
- , nothing, maybe2bool, either2maybe, either2bool 
+ ( module {{module-name}}.Extra
+ , module Control.DeepSeq
+ , module Data.Semigroup 
+ , module GHC.Generics
+ , module Data.Data
  ) where 
 
 import Control.DeepSeq (NFData) 
