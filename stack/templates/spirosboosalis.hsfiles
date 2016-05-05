@@ -9,7 +9,7 @@ license-file:        LICENSE
 author:              {{author-name}}
 maintainer:          {{author-email}}
 copyright:           {{copyright}}
-category:            {{category}}
+category:            TODO
 build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
@@ -25,11 +25,13 @@ library
  ghc-options:         -Wall -fno-warn-unticked-promoted-constructors
  default-extensions: AutoDeriveTypeable DeriveDataTypeable DeriveGeneric
                      DeriveFunctor DeriveFoldable DeriveTraversable
-                     LambdaCase EmptyDataDecls TypeOperators BangPatterns Arrows
-                     MultiWayIf DoAndIfThenElse PostfixOperators TupleSections
+                     LambdaCase EmptyCase TypeOperators PostfixOperators 
+                     ViewPatterns BangPatterns KindSignatures
+                     NamedFieldPuns RecordWildCards TupleSections
+                     MultiWayIf DoAndIfThenElse EmptyDataDecls Arrows
                      MultiParamTypeClasses FlexibleContexts FlexibleInstances 
                      TypeFamilies FunctionalDependencies
-                     ExplicitForAll StandaloneDeriving 
+                     ScopedTypeVariables StandaloneDeriving 
 
  exposed-modules:
   {{module-name}}
@@ -51,8 +53,8 @@ library
   -- , template-haskell
 
   , deepseq 
+  , semigroups
   -- ,
-  -- , semigroups
   -- , lens
   -- , exceptions
   -- , free
@@ -134,7 +136,6 @@ benchmark command
  build-depends:
     base 
   , {{name}}
-  , commands-core 
   , criterion
   , deepseq 
 
@@ -160,7 +161,7 @@ extra-deps: []
 
 {-# START_FILE sources/{{module-name}}.hs #-}
 module {{module-name}} where
-import {{module-name}}.Types
+import {{module-name}}.Types()
 
 
 {-|
@@ -174,7 +175,7 @@ _{{module-name}} = "{{module-name}}"
 
 {-# START_FILE sources/{{module-name}}/Types.hs #-}
 module {{module-name}}.Types where
-import {{module-name}}.Extra
+import {{module-name}}.Extra()
 
 
 {-# START_FILE sources/{{module-name}}/Main.hs #-}
@@ -190,7 +191,7 @@ main = do
 module {{module-name}}.Extra
  ( Generic, Data, Monoid
  , NFData, Semigroup
- , nothing, 
+ , nothing, maybe2bool, either2maybe, either2bool 
  ) where 
 
 import Control.DeepSeq (NFData) 
@@ -241,13 +242,13 @@ main = {{module-name}}.Main.main
 
 
 {-# START_FILE benchmarks/Bench.hs #-}
-import {{module-name}}
+import {{module-name}}()
 import Criterion.Main
 
 main = defaultMain [
   bgroup "{{module-name}}"
-    [ bench "1" $ nf   length [1..1000]
-    , bench "2" $ whnf length [1..1000]
+    [ bench "1" $ nf   length [1..1000::Int]
+    , bench "2" $ whnf length [1..1000::Int]
     ]
   ]
 
