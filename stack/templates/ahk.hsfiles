@@ -1,0 +1,147 @@
+{-# START_FILE {{name}}.cabal #-}
+name:                {{name}}
+version:             0.0.0
+synopsis:            TODO
+description:         TODO
+homepage:            http://github.com/{{github-username}}/{{name}}#readme
+license:             BSD3
+license-file:        LICENSE
+author:              {{author-name}}
+maintainer:          {{author-email}}
+copyright:           {{copyright}}
+category:            TODO
+build-type:          Simple
+cabal-version:       >=1.10
+
+extra-source-files:
+  README.md
+  .gitignore
+  stack.yaml
+
+source-repository head
+  type:     git
+  location: https://github.com/{{github-username}}/{{name}}
+
+data-files:
+ scripts/{{module-name}}.ahk
+
+
+library
+ hs-source-dirs:      sources
+ default-language:    Haskell2010
+ ghc-options:         -Wall 
+ default-extensions: AutoDeriveTypeable 
+                     LambdaCase PostfixOperators 
+                     NamedFieldPuns RecordWildCards TupleSections
+                     MultiWayIf DoAndIfThenElse
+ -- enable some syntax extensions that are convenient for scripting
+
+ exposed-modules:
+  {{module-name}}
+
+ build-depends:
+    base >=4.7 && <5
+
+  , ahk
+
+  , shake
+
+
+-- $ stack exec {{name}}
+executable {{name}}
+ hs-source-dirs:      .
+ main-is:             Main.hs
+
+ default-language:    Haskell2010
+ ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+
+ build-depends:
+    base
+  , {{name}}
+
+
+{-# START_FILE Setup.hs #-}
+import Distribution.Simple
+main = defaultMain
+
+
+{-# START_FILE stack.yaml #-}
+resolver: nightly-2016-mm-dd
+
+packages:
+- .
+
+extra-deps: []
+
+
+{-# START_FILE sources/{{module-name}}.hs #-}
+module {{module-name}} where
+
+_{{module-name}} :: String
+_{{module-name}} = "{{module-name}}"
+
+main = do
+ print _{{module-name}}
+
+
+{-# START_FILE Main.hs #-}
+import qualified {{module-name}}
+main = {{module-name}}.main
+
+
+{-# START_FILE .gitignore #-}
+
+# Haskell
+dist
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+.virtualenv
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+cabal.config
+report.html
+.stack-work/
+
+
+{-# START_FILE LICENSE #-}
+Copyright {{author-name}} (c) 2015
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+
+    * Neither the name of {{author-name}} nor the names of other
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+{-# START_FILE README.md #-}
+
+# {{name}}
+
+my (haskell-generated / haskell-invoking) autohotkey scripts.
