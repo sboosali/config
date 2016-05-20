@@ -14,6 +14,17 @@ build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
 
+-- PVP
+-- https://wiki.haskell.org/Package_versioning_policy
+-- "A.B is known as the major version number, and C the minor version number."
+
+extra-source-files:
+  README.md
+  .gitignore
+  .travis.yml
+  HLint.hs
+  stack.yaml
+
 source-repository head
   type:     git
   location: https://github.com/{{github-username}}/{{name}}
@@ -22,16 +33,22 @@ source-repository head
 library
  hs-source-dirs:      sources
  default-language:    Haskell2010
- ghc-options:         -Wall
+ ghc-options:       
+  -Wall
+  -fwarn-incomplete-uni-patterns
+  -fwarn-incomplete-record-updates
+  -fwarn-identities
+  -fno-warn-unticked-promoted-constructors
 
- c-sources:       native/{{module-name}}.c
+ c-sources:        native/{{module-name}}.c
  includes:         native/{{module-name}}.h
  install-includes: native/{{module-name}}.h
- include-dirs:    native
+ include-dirs:     native
 
  exposed-modules:
   {{module-name}}
   {{module-name}}.Main
+  {{module-name}}.Bindings
   {{module-name}}.Bindings
 
  build-depends:
@@ -39,10 +56,11 @@ library
   , lens
 
 
--- $ stack exec {{name}}
-executable {{name}}
+-- $ stack build && stack exec -- {{name}}-example
+executable {{name}}-example
  hs-source-dirs:      executables
  main-is:             Main.hs
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
@@ -56,30 +74,52 @@ test-suite doctest
  hs-source-dirs:      tests
  main-is:             DocTest.hs
  type:                exitcode-stdio-1.0
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
  build-depends:
-  base
+    base
   , {{name}}
-  , doctest ==0.10.*
+  , doctest 
+
 
 -- $ stack test unittest
 test-suite unittest
  hs-source-dirs:      tests
  main-is:             UnitTest.hs
  type:                exitcode-stdio-1.0
+
  default-language:    Haskell2010
  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
  other-modules:
-  {{module-name}}.Test
+  {{module}}.Test
 
  build-depends:
-  base
+    base
   , {{name}}
   , hspec ==2.2.*
   , QuickCheck ==2.8.*
+  -- , tasty
+  -- , tasty-quickcheck
+
+
+-- $ stack bench
+benchmark command
+ hs-source-dirs:      benchmarks
+ main-is:             Bench.hs
+ type:                exitcode-stdio-1.0
+
+ default-language: Haskell2010
+ ghc-options:      -Wall -threaded -rtsopts -with-rtsopts=-N
+
+ build-depends:
+    base 
+  , {{name}}
+  , criterion
+  , deepseq 
+
 
 
 {-# START_FILE cabal.config #-}
@@ -115,15 +155,8 @@ main = do
 
 
 {-# START_FILE sources/{{module-name}}/Bindings.hs #-}
-{-# LANGUAGE ForeignFunctionInterface, CPP #-}
 module {{module-name}}.Bindings where
-
-import Foreign()
-import Foreign.C.String
--- import Data.Word
-
-#include "calling_convention.h"
-
+import {{module-name}}.Foreign
 
 {-|
 
@@ -133,6 +166,16 @@ import Foreign.C.String
 -}
 _{{module-name}} :: IO String
 _{{module-name}} = c_{{module-name}} >>= peekCString
+
+
+{-# START_FILE sources/{{module-name}}/Foreign.hs #-}
+{-# LANGUAGE ForeignFunctionInterface, CPP #-}
+module {{module-name}}.Foreign where
+
+import Foreign()
+import Foreign.C.String
+
+#include "calling_convention.h"
 
 foreign import CALLING_CONVENTION safe "{{module-name}}.h {{module-name}}"
  c_{{module-name}} :: IO CString
@@ -150,7 +193,10 @@ main = do
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 import Test.DocTest
 main = do
- doctest ["{{module-name}}.Main"]
+ doctest
+  [
+  , "{{module-name}}.Bindings"
+  ]
 
 
 {-# START_FILE tests/UnitTest.hs #-}
@@ -167,7 +213,7 @@ main = {{module-name}}.Main.main
 {-# START_FILE native/{{module-name}}.c #-}
 
 const char* {{module-name}}() {
- return "{{module-name}}"; //
+ return "{{module-name}}";
 }
 
 
