@@ -49,7 +49,7 @@ library
   {{module-name}}
   {{module-name}}.Main
   {{module-name}}.Bindings
-  {{module-name}}.Bindings
+  {{module-name}}.Foreign
 
  build-depends:
     base >=4.7 && <5
@@ -194,8 +194,7 @@ main = do
 import Test.DocTest
 main = do
  doctest
-  [
-  , "{{module-name}}.Bindings"
+  [ "{{module-name}}.Bindings"
   ]
 
 
