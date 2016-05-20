@@ -40,16 +40,16 @@ library
   -fwarn-identities
   -fno-warn-unticked-promoted-constructors
 
- c-sources:        native/{{module-name}}.c
- includes:         native/{{module-name}}.h
- install-includes: native/{{module-name}}.h
+ c-sources:        native/{{module}}.c
+ includes:         native/{{module}}.h
+ install-includes: native/{{module}}.h
  include-dirs:     native
 
  exposed-modules:
-  {{module-name}}
-  {{module-name}}.Main
-  {{module-name}}.Bindings
-  {{module-name}}.Foreign
+  {{module}}
+  {{module}}.Main
+  {{module}}.Bindings
+  {{module}}.Foreign
 
  build-depends:
     base >=4.7 && <5
@@ -141,22 +141,22 @@ packages:
 extra-deps: []
 
 
-{-# START_FILE sources/{{module-name}}.hs #-}
-module {{module-name}} where
+{-# START_FILE sources/{{module}}.hs #-}
+module {{module}} where
 
 
-{-# START_FILE sources/{{module-name}}/Main.hs #-}
-module {{module-name}}.Main where
-import {{module-name}}.Bindings
+{-# START_FILE sources/{{module}}/Main.hs #-}
+module {{module}}.Main where
+import {{module}}.Bindings
 
 main :: IO ()
 main = do
- print =<< _{{module-name}}
+ print =<< _{{module}}
 
 
-{-# START_FILE sources/{{module-name}}/Bindings.hs #-}
-module {{module-name}}.Bindings where
-import {{module-name}}.Foreign
+{-# START_FILE sources/{{module}}/Bindings.hs #-}
+module {{module}}.Bindings where
+import {{module}}.Foreign
 
 {-|
 
@@ -164,29 +164,29 @@ import {{module-name}}.Foreign
 "Playground"
 
 -}
-_{{module-name}} :: IO String
-_{{module-name}} = c_{{module-name}} >>= peekCString
+_{{module}} :: IO String
+_{{module}} = c_{{module}} >>= peekCString
 
 
-{-# START_FILE sources/{{module-name}}/Foreign.hs #-}
+{-# START_FILE sources/{{module}}/Foreign.hs #-}
 {-# LANGUAGE ForeignFunctionInterface, CPP #-}
-module {{module-name}}.Foreign where
+module {{module}}.Foreign where
 
 import Foreign()
 import Foreign.C.String
 
 #include "calling_convention.h"
 
-foreign import CALLING_CONVENTION safe "{{module-name}}.h {{module-name}}"
- c_{{module-name}} :: IO CString
+foreign import CALLING_CONVENTION safe "{{module}}.h {{module}}"
+ c_{{module}} :: IO CString
 
 
-{-# START_FILE tests/{{module-name}}/Test.hs #-}
-module {{module-name}}.Test where
-import {{module-name}}
+{-# START_FILE tests/{{module}}/Test.hs #-}
+module {{module}}.Test where
+import {{module}}
 
 main = do
- print "{{module-name}}"
+ print "{{module}}"
 
 
 {-# START_FILE tests/DocTest.hs #-}
@@ -194,7 +194,7 @@ main = do
 import Test.DocTest
 main = do
  doctest
-  [ "{{module-name}}.Bindings"
+  [ "{{module}}.Bindings"
   ]
 
 
@@ -204,21 +204,21 @@ main = do
 
 {-# START_FILE executables/Main.hs #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-import qualified {{module-name}}.Main
+import qualified {{module}}.Main
 
-main = {{module-name}}.Main.main
+main = {{module}}.Main.main
 
 
-{-# START_FILE native/{{module-name}}.c #-}
+{-# START_FILE native/{{module}}.c #-}
 
-const char* {{module-name}}() {
- return "{{module-name}}";
+const char* {{module}}() {
+ return "{{module}}";
 }
 
 
-{-# START_FILE native/{{module-name}}.h #-}
+{-# START_FILE native/{{module}}.h #-}
 
-const char* {{module-name}}();
+const char* {{module}}();
 
 
 {-# START_FILE native/calling_convention.h #-}
