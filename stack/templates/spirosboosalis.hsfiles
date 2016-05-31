@@ -36,7 +36,7 @@ source-repository head
 library
  hs-source-dirs:      sources
  default-language:    Haskell2010
- ghc-options:       
+ ghc-options:
   -Wall
   -fwarn-incomplete-uni-patterns
   -fwarn-incomplete-record-updates
@@ -44,13 +44,13 @@ library
   -fno-warn-unticked-promoted-constructors
  default-extensions: AutoDeriveTypeable DeriveDataTypeable DeriveGeneric
                      DeriveFunctor DeriveFoldable DeriveTraversable
-                     LambdaCase EmptyCase TypeOperators PostfixOperators 
+                     LambdaCase EmptyCase TypeOperators PostfixOperators
                      ViewPatterns BangPatterns KindSignatures
                      NamedFieldPuns RecordWildCards TupleSections
-                     MultiWayIf DoAndIfThenElse EmptyDataDecls 
-                     MultiParamTypeClasses FlexibleContexts FlexibleInstances 
+                     MultiWayIf DoAndIfThenElse EmptyDataDecls
+                     MultiParamTypeClasses FlexibleContexts FlexibleInstances
                      TypeFamilies FunctionalDependencies
-                     ScopedTypeVariables StandaloneDeriving 
+                     ScopedTypeVariables StandaloneDeriving
 
  exposed-modules:
   {{module}}
@@ -58,7 +58,7 @@ library
 
 -- other-modules:
   {{module}}.Extra
-  {{module}}.Main
+  {{module}}.Example
 
  build-depends:
     base >=4.7 && <5
@@ -71,32 +71,31 @@ library
   -- , stm
   -- , template-haskell
 
-  , deepseq 
+  , deepseq
   , hashable
   , semigroups
   -- ,
   -- , lens
   -- , exceptions
   -- , free
-  -- , bifunctors 
-  -- , profunctors 
+  -- , bifunctors
+  -- , profunctors
   -- , either
-  -- , pipes  
-  -- , formatting 
+  -- , pipes
+  -- , formatting
   -- , servant
   -- , Earley
   -- , split
-  -- , interpolatedstring-perl6 
+  -- , interpolatedstring-perl6
   -- , wl-pprint-text
   -- , text
-  -- , aeson 
+  -- , aeson
   -- , hashable
   -- , unordered-containers
   -- , async
   -- , parallel
 
 
--- $ stack build && stack exec -- {{name}}-example
 executable {{name}}-example
  hs-source-dirs:      executables
  main-is:             Main.hs
@@ -121,7 +120,7 @@ test-suite doctest
  build-depends:
     base
   , {{name}}
-  , doctest 
+  , doctest
 
 
 -- $ stack test unittest
@@ -155,10 +154,10 @@ benchmark command
  ghc-options:      -Wall -threaded -rtsopts -with-rtsopts=-N
 
  build-depends:
-    base 
+    base
   , {{name}}
   , criterion
-  , deepseq 
+  , deepseq
 
 
 {-# START_FILE cabal.config #-}
@@ -172,7 +171,7 @@ main = defaultMain
 
 
 {-# START_FILE stack.yaml #-}
-resolver: lts-5.5
+resolver: lts-6.1
 
 packages:
 - .
@@ -181,7 +180,7 @@ extra-deps: []
 
 
 {-# START_FILE sources/{{module}}.hs #-}
-module {{module}} 
+module {{module}}
  ( module {{module}}.Types
  ) where
 import {{module}}.Types
@@ -194,10 +193,15 @@ import {{module}}.Extra()
 type {{module}} = String
 
 
-{-# START_FILE sources/{{module}}/Main.hs #-}
-module {{module}}.Main where
+{-# START_FILE sources/{{module}}/Example.hs #-}
+module {{module}}.Example where
 import {{module}}()
 
+{-|
+@
+stack build && stack exec -- {{name}}-example
+@
+-}
 main :: IO ()
 main = do
  putStrLn ""
@@ -207,38 +211,31 @@ main = do
 {-# START_FILE sources/{{module}}/Extra.hs #-}
 module {{module}}.Extra
  ( module {{module}}.Extra
+ , module X
+ ) where
 
- , module Control.DeepSeq
- , module Data.Semigroup 
+import Control.DeepSeq as X (NFData)
+import Data.Hashable as X (Hashable)
+import Data.Semigroup as X (Semigroup)
 
- , module GHC.Generics
- , module Data.Data
- , module Control.Arrow
- 
- , module Data.Function
- ) where 
+import GHC.Generics as X (Generic)
+import Data.Data as X (Data)
 
-import Control.DeepSeq (NFData) 
-import Data.Semigroup (Semigroup) 
-
-import GHC.Generics (Generic) 
-import Data.Data (Data)
-import Control.Arrow ((>>>))
-
-import Data.Function ((&))
-
+import Control.Arrow as X ((>>>))
+import Data.Function as X ((&))
+import Data.Foldable as X (traverse_)
 
 nothing :: (Monad m) => m ()
 nothing = return ()
 
 maybe2bool :: Maybe a -> Bool
-maybe2bool = maybe False (const True) 
+maybe2bool = maybe False (const True)
 
-either2maybe :: Either e a -> Maybe a 
-either2maybe = either (const Nothing) Just 
+either2maybe :: Either e a -> Maybe a
+either2maybe = either (const Nothing) Just
 
 either2bool :: Either e a -> Bool
-either2bool = either (const False) (const True) 
+either2bool = either (const False) (const True)
 
 
 {-# START_FILE tests/{{module}}/Test.hs #-}
@@ -264,9 +261,9 @@ main = doctest
 
 {-# START_FILE executables/Main.hs #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-import qualified {{module}}.Main
+import qualified {{module}}.Example
 
-main = {{module}}.Main.main
+main = {{module}}.Example.main
 
 
 {-# START_FILE benchmarks/Bench.hs #-}
