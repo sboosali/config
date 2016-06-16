@@ -96,7 +96,7 @@ library
   -- , parallel
 
 
-executable {{name}}-example
+executable example-{{name}}
  hs-source-dirs:      executables
  main-is:             Main.hs
 
@@ -194,18 +194,18 @@ type {{module}} = String
 
 
 {-# START_FILE sources/{{module}}/Example.hs #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-} -- to test inference
 module {{module}}.Example where
 import {{module}}()
 
 {-|
 @
-stack build && stack exec -- {{name}}-example
+stack build && stack exec -- example-{{name}}
 @
 -}
 main :: IO ()
 main = do
- putStrLn ""
- print $ "{{module}}"
+ putStrLn "({{module}}.Example...)"
 
 
 {-# START_FILE sources/{{module}}/Extra.hs #-}

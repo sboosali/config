@@ -1,3 +1,7 @@
+#!/usr/bin/bash
+
+## clone
+
 git clone https://github.com/sboosali/commands
 git clone https://github.com/sboosali/commands-core
 git clone https://github.com/sboosali/commands-frontends-dgn13
@@ -22,3 +26,6 @@ git clone https://github.com/sboosali/vinyl
 git clone https://github.com/sboosali/Earley
 
 # git clone https://github.com/sboosali/
+
+## https://help.github.com/articles/remove-sensitive-data/
+# [dangerous] git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA' --prune-empty --tag-name-filter cat -- --all
