@@ -10,6 +10,8 @@ extra-deps:
 
 
 {-# START_FILE Example.hs #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-} -- to test inference
+module Example where
 main = do
   print "{{name}}"
 
