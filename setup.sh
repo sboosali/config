@@ -30,11 +30,17 @@ ln -sf ~/config/stack/templates/shell-monad.hsfiles    ~/.stack/templates/shell-
 # faster repeat when holding down keys (e.g. arrow keys in mouse-less terminal)
 defaults write NSGlobalDomain KeyRepeat -int 2
 
+defaults write com.apple.finder AppleShowAllFiles YES
+killall Finder
+
 # karabiner
 
 # nix
 # http://nixos.org/nix/manual/
 # bash <(curl https://nixos.org/nix/install)
+ln -sf ~/config/nix/config.nix  ~/.nixpkgs/config.nix
+
+# User Profiles
 
 # local? 
 

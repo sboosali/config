@@ -53,47 +53,45 @@ library
                      ScopedTypeVariables StandaloneDeriving
 
  exposed-modules:
-  {{module}}
-  {{module}}.Types
-
+                 {{module}}
+                 {{module}}.Types
 -- other-modules:
-  {{module}}.Extra
-  {{module}}.Example
+                 {{module}}.Extra
+                 {{module}}.Example
 
  build-depends:
-    base >=4.7 && <5
+               base >=4.7 && <5
 
-  -- ,
-  -- , transformers
-  -- , mtl
-  -- , containers
-  -- , bytestring
-  -- , stm
-  -- , template-haskell
+--              , transformers
+--              , mtl
+--              , containers
+--              , bytestring
+--              , stm
+--              , template-haskell
 
-  , deepseq
-  , hashable
-  , semigroups
-  -- ,
-  -- , lens
-  -- , exceptions
-  -- , free
-  -- , bifunctors
-  -- , profunctors
-  -- , either
-  -- , pipes
-  -- , formatting
-  -- , servant
-  -- , Earley
-  -- , split
-  -- , interpolatedstring-perl6
-  -- , wl-pprint-text
-  -- , text
-  -- , aeson
-  -- , hashable
-  -- , unordered-containers
-  -- , async
-  -- , parallel
+          , deepseq
+          , hashable
+          , semigroups
+
+--              , lens
+--              , exceptions
+--              , free
+--              , bifunctors
+--              , profunctors
+--              , either
+--              , pipes
+--              , formatting
+--              , servant
+--              , Earley
+--              , split
+--              , interpolatedstring-perl6
+--              , wl-pprint-text
+--              , text
+--              , aeson
+--              , hashable
+--              , unordered-containers
+--              , async
+--              , parallel
 
 
 executable example-{{name}}
