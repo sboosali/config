@@ -169,7 +169,8 @@ main = defaultMain
 
 
 {-# START_FILE stack.yaml #-}
-resolver: lts-6.1
+resolver: lts-7.5
+compiler: ghc-8.0
 
 packages:
 - .
